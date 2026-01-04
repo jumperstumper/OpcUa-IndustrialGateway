@@ -3,5 +3,6 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="OpcUa-IndustrialGateway/OpcUa-IndustrialGateway.vcxproj" />
+  <Project Path="OpcUa-IndustrialGateway/OpcUa-IndustrialGateway.vcxproj" Id="bfe1c3e8-722a-4626-8686-ca89688dae16" />
+  <Project Path="OpcUaServerTest/OpcUaServerTest.vcxproj" Id="91187eda-1a5b-439f-92cf-0538a94129d6" />
 </Solution>

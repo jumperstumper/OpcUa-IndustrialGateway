@@ -6,13 +6,13 @@
 class OpcClient {
 public:
     OpcClient(std::string url);
-    ~OpcClient(); // Destruktor - här städar vi minnet!
+    ~OpcClient(); // Destruktor - städar minnet!
 
     bool connect();
     void disconnect();
-    double readTemperature(); // Vår test-metod
+    double readTemperature(); // test-metod
 
 private:
-    UA_Client* client; // En "Pointer" - välkommen till C++!
+    UA_Client* client; // En "Pointer"
     std::string endpointUrl;
 };
