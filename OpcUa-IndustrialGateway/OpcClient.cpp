@@ -21,6 +21,19 @@ bool OpcClient::connect() {
 }
 
 double OpcClient::readTemperature() {
-    // För tillfället simulerar vi ett värde
-    return 22.5 + (rand() % 10);
+    UA_Variant value;
+    UA_Variant_init(&value);
+
+    // Vi letar efter den NodeId vi skapade i servern: "boiler.temperature"
+    UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"boiler.temperature");
+
+    UA_StatusCode status = UA_Client_readValueAttribute(client, nodeId, &value);
+
+    double tempValue = 0.0;
+    if (status == UA_STATUSCODE_GOOD && UA_Variant_hasScalarType(&value, &UA_TYPES[UA_TYPES_DOUBLE])) {
+        tempValue = *(UA_Double*)value.data;
+    }
+
+    UA_Variant_clear(&value);
+    return tempValue;
 }

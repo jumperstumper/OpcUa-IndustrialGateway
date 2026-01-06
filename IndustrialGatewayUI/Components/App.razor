@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+    <link rel="stylesheet" href="@Assets["/css/bootstrap.min.css"]" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["IndustrialGatewayUI.styles.css"]" />
+    <link rel="stylesheet" href="@Assets["/css/bootstrap-icons.min.css"]" />
+    <link href="_content/Blazor.Bootstrap/blazor.bootstrap.css" rel="stylesheet" />
+    <ImportMap />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+</head>
+
+<body>
+    <Routes />
+    <ReconnectModal />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script src="@Assets["/js/bootstrap.bundle.min.js"]"></script>
+    <!-- Add chart.js reference if chart components are used in your application. -->
+    <script src="@Assets["/js/chart.umd.js"]"></script>
+    <!-- Add chartjs-plugin-datalabels.min.js reference if chart components with data label feature is used in your application. -->
+    <script src="@Assets["/js/chartjs-plugin-datalabels.min.js"]"></script>
+    <!-- Add sortable.js reference if SortableList component is used in your application. -->
+    <script src="@Assets["/js/Sortable.min.js"]"></script>
+    <script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
+</body>
+
+</html>
