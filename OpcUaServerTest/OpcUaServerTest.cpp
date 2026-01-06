@@ -6,37 +6,43 @@
 // Gör variabeln statisk så att den lever under hela programmets gång
 static volatile UA_Boolean running = true;
 
+void updateTemperature(UA_Server* server, void* data) {
+    static double currentTemp = 25.0;
+    currentTemp += (rand() % 100 - 50) / 10.0;
+
+    UA_Variant value;
+    UA_Variant_init(&value);
+    UA_Variant_setScalar(&value, &currentTemp, &UA_TYPES[UA_TYPES_DOUBLE]);
+
+    UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"boiler.temperature");
+    UA_Server_writeValue(server, nodeId, value);
+
+     std::cout << "Server uppdaterad: " << currentTemp << std::endl;
+}
+
 int main() {
     UA_Server* server = UA_Server_new();
     UA_ServerConfig_setDefault(UA_Server_getConfig(server));
 
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double initialValue = 25.0;
+    UA_Variant_setScalar(&attr.value, &initialValue, &UA_TYPES[UA_TYPES_DOUBLE]);
+    attr.displayName = UA_LOCALIZEDTEXT((char*)"en-US", (char*)"Boiler Temperature");
 
-    void updateTemperature(UA_Server * server, void* data); 
-    {
-        static double currentTemp = 25.0;
-        currentTemp += (rand() % 100 - 50) / 10.0; // Slumpar temperaturen lite upp/ner
+    UA_Server_addVariableNode(server,
+        UA_NODEID_STRING(1, (char*)"boiler.temperature"),
+        UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
+        UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES),
+        UA_QUALIFIEDNAME(1, (char*)"Boiler Temperature"),
+        UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE),
+        attr, NULL, NULL);
 
-        UA_Variant value;
-        UA_Variant_init(&value);
-        UA_Variant_setScalar(&value, &currentTemp, &UA_TYPES[UA_TYPES_DOUBLE]);
+    // 3. Registrera timern så funktionen körs varje sekund
+    UA_Server_addRepeatedCallback(server, (UA_ServerCallback)updateTemperature, NULL, 1000, NULL);
 
-        UA_NodeId nodeId = UA_NODEID_STRING(1, (char*)"boiler.temperature");
-        UA_Server_writeValue(server, nodeId, value);
-    }
+    std::cout << "Server startad på opc.tcp://localhost:4840" << std::endl;
 
-    std::cout << "OPC UA Test Server startad på opc.tcp://localhost:4840" << std::endl;
-    std::cout << "Tryck Ctrl+C för att avsluta." << std::endl;
-
-    // Detta är det moderna sättet att köra servern
     UA_StatusCode retval = UA_Server_run(server, &running);
-
-    // Om UA_Server_run mot förmodan inte hittas av din kompilator, 
-    // kan du använda denna manuella loop istället:
-    /*
-    while(running) {
-        UA_Server_run_iterate(server, true);
-    }
-    */
 
     UA_Server_delete(server);
     return (int)retval;
