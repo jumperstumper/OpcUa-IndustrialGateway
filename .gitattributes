@@ -6,6 +6,7 @@
 *.razor.css linguist-vendored
 *.html linguist-vendored
 *.css linguist-vendored
+*.c# linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
